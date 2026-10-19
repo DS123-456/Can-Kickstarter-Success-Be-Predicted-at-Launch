@@ -59,10 +59,10 @@ Web Robots notes that its collection process can return duplicate projects becau
 
 Only campaigns with a known final outcome were used for the main model:
 
-- successful -> `1`
+- 'successful' -> `1`
 - `failed` -> `0`
 
-Projects that were live, submitted, started, cancelled or otherwise lacked the specific successful/failed outcome required by the primary question were excluded from the main modelling population.
+Projects that were live, submitted, started, cancelled or lacked the specific successful/failed outcome required by the primary question were excluded from the main modelling population.
 
 After filtering, validation and deduplication, the dataset contained **138,189 completed campaigns**:
 
@@ -73,3 +73,42 @@ The unit of analysis is one Kickstarter campaign.
 
 ---
 
+## Data preparation and leakage control
+
+A substantial part of the project was designing a modelling dataset that could realistically have existed **at launch**.
+
+### 1. Load and combine the source files
+
+The Alteryx workflow uses a **Directory** tool and **Dynamic Input** to read all CSV components from the selected snapshot folder and append them into one stream. This makes the ingestion repeatable if the snapshot contains multiple component files.
+
+### 2. Remove clearly post-launch information
+
+Fields that directly or indirectly reveal how the campaign performed were removed from the predictor stream. Examples include:
+
+- pledged amount
+- USD pledged amount
+- converted pledged amount
+- percentage funded
+- number of backers
+- spotlight status
+- state-change timing
+
+Including these fields would create **target leakage** because they are only known during or after campaign performance unfolds. A model containing them might look extremely accurate while being useless for a genuine launch-time prediction.
+
+### 3. Keep launched, completed campaigns only
+
+The workflow removes projects that were not launched and then retains the two target states used in the primary model: successful and failed.
+
+### 4. Convert Unix timestamps and enforce date logic
+
+The raw timestamp fields were converted into readable dates for:
+
+- project creation
+- launch
+- funding deadline
+
+A QA rule required:
+
+`Created date <= Launch date <= Deadline date`
+
+This makes the chronology explicit and prevents invalid sequences entering the feature calculations.
