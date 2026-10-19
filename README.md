@@ -198,7 +198,7 @@ All EDA, transformations, bands, rare-country decisions and model selection were
 
 This choice was important because the underlying Kickstarter success rate changed materially over time.
 
-![Historical success-rate trend](images/Figure2.png)
+![Historical success-rate trend](images/Figure1.png)
 
 The Test period success rate is almost nine percentage points higher than the historical training period. A random split would mix old and recent campaigns together and could make future performance appear more stable than it really is.
 
@@ -231,6 +231,27 @@ The funding-goal distribution is highly skewed:
 
 The raw distribution is dominated by a small number of extremely large values. The log10 transformation compresses that tail and gives a much more useful modelling scale.
 
-![Goal & log histograms](images/Figure1.png)
+![Goal & log histograms](images/Figure2.png)
 
 **Decision:** use `Log10_Goal_USD` rather than raw `Goal_USD`.
+
+### Campaign duration
+
+Duration is not distributed smoothly. Around **43,600 training campaigns run for exactly 30 days**, with another strong concentration at 60 days.
+
+![Goal & log histograms](images/Figure3.png)
+
+Observed success was also non-linear:
+
+| Duration | Training campaigns | Success rate |
+|---|---:|---:|
+| 1-14 days | 5,383 | 74.6% |
+| 15-29 days | 20,915 | 76.6% |
+| 30 days | 43,600 | 61.9% |
+| 31-44 days | 18,561 | 72.8% |
+| 45-59 days | 8,526 | 57.0% |
+| 60+ days | 11,408 | 42.8% |
+
+A single numeric duration term would incorrectly assume that every extra day has the same directional effect on log-odds.
+
+**Decision:** use duration as categorical bands, with **30 days as the reference group**.
