@@ -31,3 +31,26 @@ The aim was not to build the most complex possible model. The priority was to bu
 ## Project framing
 
 Kickstarter campaigns are created with a set of decisions already made before launch: the funding goal, campaign duration, project category, preparation period, project title and short description (blurb), country and launch timing. The central question for this project was whether those **launch-time characteristics** contain enough information to estimate the probability that a project will eventually be successfully funded.
+
+The problem is naturally suited to **binary classification**:
+
+- `1` = successful campaign
+- `0` = failed campaign
+
+I chose **logistic regression** for three main reasons:
+
+1. The target is binary and the model produces a probability of success between 0 and 1.
+2. Logistic regression is relatively transparent: coefficients and odds ratios can be translated into understandable statements about historical associations.
+3. The objective was to understand the main predictive relationships, not simply to maximise predictive accuracy with an algorithm which is harder to understand and communicate.
+
+---
+
+## Data source and scope
+
+The data came from the public **Web Robots Kickstarter dataset**:
+
+https://webrobots.io/kickstarter-datasets/
+
+Web Robots publishes monthly Kickstarter scrapes in CSV and JSON formats. I used the **10 September 2026 CSV snapshot** rather than combining multiple monthly snapshots.
+
+Web Robots notes that its collection process can return duplicate projects because projects may appear in multiple sub-categories. Duplicate handling was therefore treated as a deliberate data-quality step rather than assuming every row was unique.
