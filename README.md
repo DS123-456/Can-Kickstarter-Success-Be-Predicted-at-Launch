@@ -201,7 +201,7 @@ All EDA, transformations, bands, rare-country decisions and model selection were
 
 This choice was important because the underlying Kickstarter success rate changed materially over time, see figure 2.
 
-(images/Figure2.png)
+![Historical success-rate trend](images/Figure2.png)
 
 The Test period success rate is almost nine percentage points higher than the historical training period. A random split would mix old and recent campaigns together and could make future performance appear more stable than it really is.
 
