@@ -142,3 +142,18 @@ The purpose of these checks is reproducibility: even if the current data pass a 
 ## Feature engineering
 
 The workflow creates a small set of features that can be understood by a non-technical reader and are available at launch.
+
+### Funding goal
+
+`Goal_USD = goal x static_usd_rate`
+
+The raw goal was converted to USD so that goals from different currencies could be placed on a common scale.
+
+A second field was then created:
+
+`Log10_Goal_USD = log10(Goal_USD)`
+
+The logarithm was used because raw funding goals are extremely right-skewed, see figure 1. It also produces a useful interpretation: a one-unit increase in `Log10_Goal_USD` represents a **tenfold increase in funding goal**.
+
+![EDA patterns that informed the final feature formats](images/Figure1.png)
+
