@@ -336,10 +336,10 @@ Two logistic-regression iterations were developed using the same training data.
 
 The Core model represents information about the campaign design and launch context:
 
-- `Log10_Goal_USD`
+- Log10_Goal_USD
 - duration band
 - parent category
-- country / `Other`
+- country
 - launch month
 - launch weekday
 
