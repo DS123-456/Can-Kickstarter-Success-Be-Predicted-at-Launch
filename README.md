@@ -187,3 +187,12 @@ The resulting training-derived mapping was then applied unchanged to the test pe
 Categorical variables and EDA-defined bands were converted into indicator fields in Alteryx before logistic regression. One category from each field was omitted as the reference level.
 
 ---
+
+## Train/test design
+
+The project uses a **chronological Train/Test split**, not a random split.
+
+| Dataset | Period | Campaigns | Success rate |
+|---|---|---:|---:|
+| Train | Launch through 31 Dec 2024 | 108,393 | 64.9% |
+| Test | Launch from 1 Jan 2025 | 29,796 | 73.5% |
