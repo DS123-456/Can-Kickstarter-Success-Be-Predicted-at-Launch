@@ -156,7 +156,7 @@ A second field was then created:
 The logarithm was used because raw funding goals are extremely right-skewed, see figure 1. It also produces a useful interpretation: a one-unit increase in `Log10_Goal_USD` represents a **tenfold increase in funding goal**.
 
 
-(images/Figure1.png)
+![Goal & log histograms](images/Figure1.png)
 
 
 ### Campaign timing
