@@ -315,3 +315,9 @@ Success rates varied meaningfully across the 15 parent categories in the trainin
 ![Success rate by parent category](images/Figure7.png)
 
 The variation is large enough to justify including parent category as a categorical predictor in the multivariable model.
+
+### Country, launch month and weekday
+
+Country and launch timing also showed differences in observed success. Sparse countries were grouped into 'Other' using the Train-only rule described earlier. Month and weekday were retained as categorical variables because they provide low-complexity launch-time context.
+
+![Success rate for country, month and weekday](images/Figure8.png)
