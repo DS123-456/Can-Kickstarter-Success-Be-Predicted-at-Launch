@@ -321,3 +321,34 @@ The variation is large enough to justify including parent category as a categori
 Country and launch timing also showed differences in observed success. Sparse countries were grouped into 'Other' using the Train-only rule described earlier. Month and weekday were retained as categorical variables because they provide low-complexity launch-time context.
 
 ![Success rate for country, month and weekday](images/Figure8.png)
+
+### Correlation checks
+
+Numeric candidate fields were checked for obvious pairwise correlation problems. No issue was large enough to require removing a final numeric predictor. The main transformation decisions came from distribution shape and the relationship with success rather than from correlation alone.
+
+---
+
+## Model design
+
+Two logistic-regression iterations were developed using the same training data.
+
+### Core model
+
+The Core model represents information about the campaign design and launch context:
+
+- `Log10_Goal_USD`
+- duration band
+- parent category
+- country / `Other`
+- launch month
+- launch weekday
+
+### Expanded model
+
+The Expanded model contains all Core predictors plus three additional features related to preparation and presentation:
+
+- preparation-time band
+- title word count
+- blurb-length band
+
+The purpose of the comparison was simple: **do these additional variables add enough predictive value to justify the extra complexity?**
