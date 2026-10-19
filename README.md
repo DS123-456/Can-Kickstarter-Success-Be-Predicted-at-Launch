@@ -59,7 +59,7 @@ Web Robots notes that its collection process can return duplicate projects becau
 
 Only campaigns with a known final outcome were used for the main model:
 
-- `successful` -> `1`
+- successful -> `1`
 - `failed` -> `0`
 
 Projects that were live, submitted, started, cancelled or otherwise lacked the specific successful/failed outcome required by the primary question were excluded from the main modelling population.
