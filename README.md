@@ -232,3 +232,5 @@ The funding-goal distribution is highly skewed:
 The raw distribution is dominated by a small number of extremely large values. The log10 transformation compresses that tail and gives a much more useful modelling scale.
 
 ![Goal & log histograms](images/Figure1.png)
+
+**Decision:** use `Log10_Goal_USD` rather than raw `Goal_USD`.
