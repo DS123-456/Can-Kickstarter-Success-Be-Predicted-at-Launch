@@ -307,3 +307,11 @@ Blurb length showed an inverted-U pattern rather than a linear relationship.
 | 30+ words | 53.5% |
 
 **Decision:** use blurb-length bands, with **16-20 words as the reference group**.
+
+### Parent category
+
+Success rates varied meaningfully across the 15 parent categories in the training data. Film & Video, Dance, Music and Art were among the higher observed rates, while Fashion, Food and Journalism were much lower.
+
+![Success rate by parent category](images/Figure7.png)
+
+The variation is large enough to justify including parent category as a categorical predictor in the multivariable model.
