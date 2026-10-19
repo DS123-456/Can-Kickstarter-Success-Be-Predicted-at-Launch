@@ -107,8 +107,38 @@ The raw timestamp fields were converted into readable dates for:
 - launch
 - funding deadline
 
-A QA rule required:
+A QA rule requires:
 
 `Created date <= Launch date <= Deadline date`
 
 This makes the chronology explicit and prevents invalid sequences entering the feature calculations.
+
+### 5. Investigate and remove duplicates
+
+Duplicate project IDs were investigated before a unique-project stream was created. The final modelling table contains **138,189 unique campaign IDs**.
+
+### 6. Parse nested fields
+
+The workflow investigates nested JSON-style fields for category, creator, location and video information. Category information was retained because it produced stable, interpretable predictors. Creator, location-detail and video fields were investigated but were not added to the final model because they were either too granular, not clearly useful, or not sufficiently defensible as stable launch-time predictors for this project.
+
+### 7. Parent category clean-up
+
+Some records had no parent category because the recorded category itself represented a top-level Kickstarter category. These were investigated and the parent-category field was completed for modelling.
+
+### 8. Final QA gate
+
+Before modelling, records were checked for:
+
+- positive USD funding goal
+- positive campaign duration
+- non-negative preparation duration
+- non-null target
+- non-null category and country
+
+The purpose of these checks is reproducibility: even if the current data pass a rule, the workflow will also protect a future refresh from silently passing invalid rows downstream.
+
+---
+
+## Feature engineering
+
+The workflow creates a small set of features that can be understood by a non-technical reader and are available at launch.
