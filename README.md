@@ -284,8 +284,26 @@ The relationship with success is clearly non-linear. Success rises through the e
 
 Title length showed a comparatively smooth positive relationship with success. For example, the observed success rate rose from approximately **56% for 1-3 word titles** to around **73% for 10-12 words**.
 
-![Tile word count success rate](images/Figure5.png)
+![Title word count success rate](images/Figure5.png)
 
 The log-odds relationship was sufficiently regular to keep this variable continuous.
 
 **Decision:** use `Title_Word_Count` as a numeric predictor.
+
+### Blurb length
+
+Blurb length showed an inverted-U pattern rather than a linear relationship.
+
+![Blurb word count success rate](images/Figure6.png)
+
+| Blurb length | Success rate |
+|---|---:|
+| 1-5 words | 58.7% |
+| 6-10 words | 65.5% |
+| 11-15 words | 69.4% |
+| 16-20 words | 66.0% |
+| 21-25 words | 62.5% |
+| 26-29 words | 57.9% |
+| 30+ words | 53.5% |
+
+**Decision:** use blurb-length bands, with **16-20 words as the reference group**.
