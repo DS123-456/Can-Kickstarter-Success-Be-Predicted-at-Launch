@@ -8,7 +8,7 @@ This project builds an end-to-end **Alteryx** workflow that takes raw Kickstarte
 
 The aim was not to build the most complex possible model. The priority was to build a model that was **interpretable, reproducible and free from obvious outcome leakage**. Only information that could reasonably be known when a campaign launches was allowed into the predictor set.
 
----
+---Detailed GitHub 
 
 ## Contents
 
