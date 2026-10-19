@@ -28,3 +28,6 @@ The aim was not to build the most complex possible model. The priority was to bu
 
 ---
 
+## Project framing
+
+Kickstarter campaigns are created with a set of decisions already made before launch: the funding goal, campaign duration, project category, preparation period, project title and short description (blurb), country and launch timing. The central question for this project was whether those **launch-time characteristics** contain enough information to estimate the probability that a project will eventually be successfully funded.
