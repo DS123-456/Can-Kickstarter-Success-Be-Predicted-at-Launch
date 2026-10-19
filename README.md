@@ -156,9 +156,6 @@ A second field was then created:
 The logarithm was used because raw funding goals are extremely right-skewed, see figure 1. It also produces a useful interpretation: a one-unit increase in `Log10_Goal_USD` represents a **tenfold increase in funding goal**.
 
 
-![Goal & log histograms](images/Figure1.png)
-
-
 ### Campaign timing
 
 - `Campaign_Duration_Days = deadline - launch date`
@@ -199,10 +196,39 @@ The project uses a **chronological Train/Test split**, not a random split.
 
 All EDA, transformations, bands, rare-country decisions and model selection were based on **Train only**. The Test set was reserved for the final evaluation after the model specification had been locked.
 
-This choice was important because the underlying Kickstarter success rate changed materially over time, see figure 2.
+This choice was important because the underlying Kickstarter success rate changed materially over time.
 
 ![Historical success-rate trend](images/Figure2.png)
 
 The Test period success rate is almost nine percentage points higher than the historical training period. A random split would mix old and recent campaigns together and could make future performance appear more stable than it really is.
 
 ---
+
+## Exploratory data analysis
+
+EDA was used to decide **how variables should enter the model**, not simply to produce descriptive charts. The main questions were:
+
+- Is the variable strongly skewed?
+- Does the relationship with success appear linear or non-linear?
+- Are categories well populated?
+- Does the variable provide a plausible launch-time signal?
+
+- ### Target balance
+
+The training data contain more successful than failed campaigns, so accuracy alone is not a sufficient evaluation metric. A majority-class classifier would already achieve **64.9% accuracy on Train** and **73.5% on Test** simply by predicting Success for every campaign.
+
+This motivated the later use of AUC, F1 and class-level recall alongside accuracy.
+
+### Funding goal: raw vs log scale
+
+The funding-goal distribution is highly skewed:
+
+- median training goal: approximately **$4,000**
+- mean: approximately **$29,529**
+- 95th percentile: **$50,000**
+- 99th percentile: **$200,000**
+- maximum: more than **$100 million**
+
+The raw distribution is dominated by a small number of extremely large values. The log10 transformation compresses that tail and gives a much more useful modelling scale.
+
+![Goal & log histograms](images/Figure1.png)
