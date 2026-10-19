@@ -279,3 +279,13 @@ The relationship with success is clearly non-linear. Success rises through the e
 | 107+ days | 68.2% |
 
 **Decision:** use preparation-time bands, with **31-106 days as the reference group**.
+
+### Title length
+
+Title length showed a comparatively smooth positive relationship with success. For example, the observed success rate rose from approximately **56% for 1-3 word titles** to around **73% for 10-12 words**.
+
+![Tile word count success rate](images/Figure5.png)
+
+The log-odds relationship was sufficiently regular to keep this variable continuous.
+
+**Decision:** use `Title_Word_Count` as a numeric predictor.
