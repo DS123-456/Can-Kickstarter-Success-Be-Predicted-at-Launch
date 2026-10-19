@@ -155,5 +155,35 @@ A second field was then created:
 
 The logarithm was used because raw funding goals are extremely right-skewed, see figure 1. It also produces a useful interpretation: a one-unit increase in `Log10_Goal_USD` represents a **tenfold increase in funding goal**.
 
-![EDA patterns that informed the final feature formats](images/Figure1.png)
 
+(images/Figure1.png)
+
+
+### Campaign timing
+
+- `Campaign_Duration_Days = deadline - launch date`
+- `Preparation_Days = launch date - creation date`
+- launch month
+- launch weekday
+- launch year
+
+Launch year was used for the chronological split and analysis of changes over time, not as a predictor in the final model.
+
+### Text length
+
+- title word count
+- blurb word count
+
+The objective was to test whether the **amount of text** contained useful signals.
+
+### Country grouping
+
+Country frequency was calculated from the **training data only**. Countries with fewer than **300 training campaigns** were grouped into `Other`.
+
+The resulting training-derived mapping was then applied unchanged to the test period. A country appearing in Test without an established training category was also mapped to `Other` rather than creating a new unseen model level.
+
+### One-hot encoding
+
+Categorical variables and EDA-defined bands were converted into indicator fields in Alteryx before logistic regression. One category from each field was omitted as the reference level.
+
+---
