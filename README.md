@@ -54,3 +54,22 @@ https://webrobots.io/kickstarter-datasets/
 Web Robots publishes monthly Kickstarter scrapes in CSV and JSON formats. I used the **10 September 2026 CSV snapshot** rather than combining multiple monthly snapshots.
 
 Web Robots notes that its collection process can return duplicate projects because projects may appear in multiple sub-categories. Duplicate handling was therefore treated as a deliberate data-quality step rather than assuming every row was unique.
+
+### Primary modelling population
+
+Only campaigns with a known final outcome were used for the main model:
+
+- `successful` -> `1`
+- `failed` -> `0`
+
+Projects that were live, submitted, started, cancelled or otherwise lacked the specific successful/failed outcome required by the primary question were excluded from the main modelling population.
+
+After filtering, validation and deduplication, the dataset contained **138,189 completed campaigns**:
+
+- **92,208 successful**
+- **45,981 failed**
+
+The unit of analysis is one Kickstarter campaign.
+
+---
+
