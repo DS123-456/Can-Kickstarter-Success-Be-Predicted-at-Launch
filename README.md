@@ -8,17 +8,23 @@ This project builds an end-to-end **Alteryx** workflow that takes raw Kickstarte
 
 The aim was not to build the most complex possible model. The priority was to build a model that was **interpretable, reproducible and free from obvious outcome leakage**. Only information that could reasonably be known when a campaign launches was allowed into the predictor set.
 
-### Headline results
+---
 
-| Measure | Result |
-|---|---:|
-| Completed campaigns used | **138,189** |
-| Training campaigns, launched through 2024 | **108,393** |
-| Test campaigns, launched from 2025 onwards | **29,796** |
-| Training success rate | **64.9%** |
-| Test success rate | **73.5%** |
-| Selected model | **Expanded logistic regression** |
-| Cross-validated AUC | **0.770** |
-| Final test accuracy | **79.6%** |
-| Final test AUC | **0.7966** |
-| Final test F1 | **0.8705** |
+## Contents
+
+1. [Project framing](#project-framing)
+2. [Data source and scope](#data-source-and-scope)
+3. [Data preparation](#data-preparation-and-leakage-control)
+4. [Feature engineering](#feature-engineering)
+5. [Train/test design](#traintest-design)
+6. [Exploratory data analysis](#exploratory-data-analysis)
+7. [Model design](#model-design)
+8. [Cross-validation and model selection](#cross-validation-and-model-selection)
+9. [Final model evaluation](#final-model-evaluation)
+10. [Interpreting the selected model](#interpreting-the-selected-model)
+11. [Limitations](#limitations)
+12. [Future development](#future-development)
+13. [Repository structure and reproduction](#repository-structure-and-reproduction)
+
+---
+
