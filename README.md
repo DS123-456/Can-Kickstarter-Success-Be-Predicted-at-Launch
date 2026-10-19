@@ -196,3 +196,13 @@ The project uses a **chronological Train/Test split**, not a random split.
 |---|---|---:|---:|---:|
 | Train | Launch through 31 Dec 2024 | 108,393 | 78.4% | 64.9% |
 | Test | Launch from 1 Jan 2025 | 29,796 | 21.6% | 73.5% |
+
+All EDA, transformations, bands, rare-country decisions and model selection were based on **Train only**. The Test set was reserved for the final evaluation after the model specification had been locked.
+
+This choice was important because the underlying Kickstarter success rate changed materially over time, see figure 2.
+
+(images/Figure2.png)
+
+The Test period success rate is almost nine percentage points higher than the historical training period. A random split would mix old and recent campaigns together and could make future performance appear more stable than it really is.
+
+---
