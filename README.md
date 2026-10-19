@@ -239,7 +239,7 @@ The raw distribution is dominated by a small number of extremely large values. T
 
 Duration is not distributed smoothly. Around **43,600 training campaigns run for exactly 30 days**, with another strong concentration at 60 days.
 
-![Goal & log histograms](images/Figure3.png)
+![Duration histograms](images/Figure3.png)
 
 Observed success was also non-linear:
 
@@ -255,3 +255,27 @@ Observed success was also non-linear:
 A single numeric duration term would incorrectly assume that every extra day has the same directional effect on log-odds.
 
 **Decision:** use duration as categorical bands, with **30 days as the reference group**.
+
+### Preparation time
+
+Preparation time is heavily right-skewed. In Train:
+
+- median = **13 days**
+- 90th percentile = **105 days**
+- 99th percentile = about **650 days**
+- maximum = more than **3,900 days**
+
+![Preparation histograms](images/Figure4.png)
+
+The relationship with success is clearly non-linear. Success rises through the early preparation bands, peaks in the 31-106 day group, then falls slightly for the longest-preparation campaigns.
+
+| Preparation time | Success rate |
+|---|---:|
+| 0-1 day | 45.8% |
+| 2-5 days | 57.0% |
+| 6-13 days | 68.0% |
+| 14-30 days | 72.7% |
+| 31-106 days | 73.6% |
+| 107+ days | 68.2% |
+
+**Decision:** use preparation-time bands, with **31-106 days as the reference group**.
