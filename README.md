@@ -395,3 +395,7 @@ The Expanded model was therefore selected before the 2025+ Test set was evaluate
 | Majority-class baseline accuracy | **73.5%** |
 
 The final model improves accuracy by about **6.1 percentage points** over a classifier that simply predicts Success for every campaign.
+
+### Confusion matrix
+
+![Confusion matrix](images/Figure10.png)
