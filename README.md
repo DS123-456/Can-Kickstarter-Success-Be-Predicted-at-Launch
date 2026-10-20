@@ -439,5 +439,5 @@ Selected odds ratios from the Expanded logistic regression model:
 | Blurb 11-15 words vs 16-20 | **1.202** | About 20% higher odds |
 | Blurb 30+ words vs 16-20 | **0.582** | About 42% lower odds |
 
-Odds ratios were calculated from the logistic regression coefficients using exp(coefficient).
+Odds ratios were calculated from the logistic regression coefficients using 'exp(coefficient)'.
 
