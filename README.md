@@ -454,7 +454,7 @@ The model correctly identified **93.3% of successful campaigns**, but only **41.
 
 The model also achieved an **AUC of 0.797**, indicating a reasonable ability to distinguish between campaigns with higher and lower likelihoods of success.
 
-![ROC curve](images/Figure11.png)
+![ROC curve](images/Figure12.png)
 
 Overall, these results suggest that campaign characteristics available at launch contain useful predictive information. However, the lower failure recall is an important limitation, particularly if the model were used to identify campaigns at risk of missing their funding goal.
 
