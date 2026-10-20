@@ -352,3 +352,23 @@ The Expanded model contains all Core predictors plus three additional features r
 - blurb-length band
 
 The purpose of the comparison was simple: **do these additional variables add enough predictive value to justify the extra complexity?**
+
+### Stepwise robustness check
+
+Stepwise AIC versions of both models were also created as a robustness check. The Expanded stepwise version removed only a small number of weaker country/month indicators and produced almost identical predictive performance and coefficient estimates.
+
+The full Expanded model was retained because the stepwise version produced almost identical results, so simplifying the model further offered little practical benefit.
+
+---
+
+## Cross-validation and model selection
+
+The Core and Expanded models were compared using cross-validation on the Train data only. Five folds were repeated across three trials using a fixed seed of 42, so performance was assessed on held-back data rather than only on the records used to build the models.
+
+| Metric | Core | Expanded | Improvement |
+|---|---:|---:|---:|
+| Accuracy | 0.7149 | **0.7425** | +0.0276 |
+| AUC | 0.7288 | **0.7697** | +0.0409 |
+| F1 | 0.8010 | **0.8167** | +0.0157 |
+| Failure recall | 0.4042 | **0.4833** | +0.0791 |
+| Success recall | **0.8821** | 0.8820 | effectively unchanged |
