@@ -120,9 +120,7 @@ This makes the chronology explicit and prevents invalid sequences entering the f
 
 ### 5. Investigate and remove duplicates
 
-The source data can contain the same Kickstarter project more than once because projects may appear in multiple categories.
-
-I checked for duplicate project IDs before removing repeated records, ensuring each campaign was represented only once in the modelling dataset.
+The source data contained some repeated Kickstarter project IDs. I checked these records before removing duplicates, ensuring each campaign was represented only once in the modelling dataset.
 
 ### 6. Investigate nested fields
 
@@ -132,7 +130,7 @@ I investigated these fields to identify whether they contained useful informatio
 
 Category information was retained because it provided a clear and interpretable way of comparing different types of projects.
 
-The additional creator, location and video details were not included in the final model because they were either too detailed, showed limited usefulness, or could not be confidently treated as reliable information available at launch.
+The additional creator, location and video details were not included in the final model because they were either too detailed for the scope of the project or could not be confidently treated as reliable information available at launch.
 
 ### 7. Parent category clean-up
 
@@ -189,7 +187,7 @@ Launch year was used for the chronological split and analysis of changes over ti
 - title word count
 - blurb word count
 
-The objective was to test whether the **amount of text** contained useful signals.
+The objective was to test whether title and blurb length were related to campaign success.
 
 ### Country grouping
 
@@ -218,7 +216,7 @@ An important finding was that the success rate increased from 64.9% in the train
 
 ![Historical success-rate trend](images/Figure1.png)
 
-All EDA, transformations, bands, rare-country decisions and model selection were based on **Train only**. The Test set was reserved for the final evaluation after the model specification had been locked.
+All EDA and modelling decisions, including band definitions, country grouping and model selection, were based on Train only. The Test set was reserved for final evaluation after the model specification had been fixed.
 
 ---
 
@@ -233,7 +231,7 @@ EDA was used to decide **how variables should enter the model**, not simply to p
 
 ### Target balance
 
-Successful campaigns made up the majority of the dataset, meaning that accuracy alone could provide a misleading impression of model performance. I therefore used additional measures, including AUC, F1-score and recall for each outcome, to assess the models more thoroughly.
+Successful campaigns made up the majority of the training data, meaning that accuracy alone could provide a misleading impression of model performance. I therefore used additional measures, including AUC, F1-score and recall for each outcome, to assess the models more thoroughly.
 
 ### Funding goal: raw vs log scale
 
@@ -245,7 +243,7 @@ The funding-goal distribution is highly skewed:
 - 99th percentile: **$200,000**
 - maximum: more than **$100 million**
 
-Figure 2 shows how strongly the raw funding goals are skewed, with a small number of very large campaigns. The log10 transformation produces a more balanced distribution, supporting its use in the regression model.
+Figure 2 shows how strongly the raw funding goals are skewed, with a small number of very large campaigns. The log10 transformation reduces the heavy skew and compresses the extreme values, making the funding goal easier to represent in the regression model.
 
 ![Goal & log histograms](images/Figure2.png)
 
@@ -301,7 +299,7 @@ Title length showed a comparatively smooth positive relationship with success. F
 
 ![Title word count success rate](images/Figure5.png)
 
-The log-odds relationship was sufficiently regular to keep this variable continuous.
+The relationship was smooth enough to keep title length as a single numeric predictor.
 
 **Decision:** use `Title_Word_Count` as a numeric predictor.
 
@@ -376,7 +374,7 @@ I also tested stepwise AIC versions of both models to see whether a simpler mode
 
 ## Cross-validation and model selection
 
-To compare the models fairly, I used repeated five-fold cross-validation on the training data. This meant that each model was evaluated on data not used to fit it, rather than relying solely on its performance on the full training dataset.
+To compare the models fairly, I used repeated five-fold cross-validation on the training data. The training data was split into five parts, with the model built using four parts and assessed on the remaining part. This was repeated so that each part was used for assessment, and the full process was repeated across three trials.
 
 | Metric | Core | Expanded | Improvement |
 |---|---:|---:|---:|
@@ -456,27 +454,17 @@ The table below highlights seven selected predictors from the Expanded model, us
 | Predictor / comparison | Odds ratio | Interpretation |
 |---|---:|---|
 | Tenfold increase in funding goal | **0.383** | Approximately 62% lower odds of success |
-| Preparation time: 0–1 day | **0.205** | Approximately 80% lower odds |
-| Duration: 15–29 days | **1.786** | Approximately 79% higher odds |
-| Duration: 60+ days | **0.528** | Approximately 47% lower odds |
+| Preparation time: 0–1 vs 31–106 days | **0.205** | Approximately 80% lower odds |
+| Duration: 15–29 vs 30 days | **1.786** | Approximately 79% higher odds |
+| Duration: 60+ vs 30 days | **0.528** | Approximately 47% lower odds |
 | One additional title word | **1.100** | Approximately 10% higher odds per word |
-| Blurb length: 21–25 words | **0.791** | Approximately 21% lower odds |
-| Fashion category | **0.153** | Approximately 85% lower odds |
+| Blurb length: 21–25 vs 16–20 words | **0.791** | Approximately 21% lower odds |
+| Fashion category vs Film & Video | **0.153** | Approximately 85% lower odds |
 
 
 ![Selected predictor odds ratios](images/Figure13.png)
 
 The orange reference line represents an odds ratio of 1.0, indicating no difference in odds.
-
-The categorical comparisons use the following reference groups:
-
-- **Preparation time**: 31–106 days
-
-- **Campaign duration**: 30 days
-
-- **Blurb length**: 16–20 words
-
-- **Parent category**: Film & Video
 
 These are selected examples rather than a complete list of model coefficients. They illustrate some of the more interesting relationships identified in the analysis.
 
@@ -509,7 +497,7 @@ These findings reflect statistical associations rather than evidence of causatio
 
 ## Limitations
 
-### Source-data representativeness
+### Limits of the source data
 
 The analysis uses a public Web Robots dataset rather than a controlled random sample. The results should therefore be interpreted within the available data rather than treated as exact estimates for all Kickstarter activity.
 
@@ -537,12 +525,6 @@ The model uses a deliberately limited set of launch-time characteristics. Other 
 
 These were outside the scope of the current analysis. Post-launch performance information was deliberately excluded to prevent target leakage.
 
-### Probability estimates
-
-Although logistic regression produces estimated probabilities, the analysis has not established how well these estimates are calibrated.
-
-Further evaluation would be needed before interpreting individual predicted probabilities as reliable estimates of a campaign's actual likelihood of success.
-
 ---
 
 ## Future development
@@ -551,7 +533,7 @@ The project could be extended in several directions without changing the core wo
 
 1. **Validate on later campaigns**: Evaluate the model on another group of campaigns once their outcomes are known, to assess whether predictive performance remains stable over time.
 2. **Monitor changes in campaign characteristics**: Examine shifts in country mix, project categories, funding goals and overall success rates.
-3. **Investigate classification thresholds and probability calibration**: Assess whether alternative classification thresholds improve failure detection and whether the predicted probabilities reflect observed outcomes. Threshold selection should use separate validation data rather than the final test set.
+3. **Investigate classification thresholds**: Assess whether an alternative threshold could improve the model's ability to identify failed campaigns, using separate validation data rather than the final Test set.
 4. **Introduce creator history**: Investigate whether information about a creator's previous projects improves predictions, using only information available before each campaign launches.
 5. **Explore campaign text**: Test whether features derived from titles and descriptions improve performance, while retaining logistic regression as an interpretable benchmark.
 
