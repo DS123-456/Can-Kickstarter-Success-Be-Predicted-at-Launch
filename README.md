@@ -45,9 +45,7 @@ The objective was to develop an interpretable model that could help explain hist
 
 The outcome of each campaign was classified as either successful (1) or failed (0), making this a binary classification problem.
 
-I chose logistic regression because it is suitable for predicting binary outcomes and produces results that can be interpreted using coefficients and odds ratios.
-
-This was important because I wanted to understand which campaign characteristics were associated with success, rather than simply produce predictions without being able to explain them.
+I chose logistic regression because it is suitable for binary classification and produces interpretable coefficients and odds ratios. This allows me to understand which campaign characteristics are associated with success, rather than simply generating predictions.
 
 ---
 
@@ -74,6 +72,7 @@ After filtering, validation and deduplication, the dataset contained **138,189 c
 - **92,208 successful**
 - **45,981 failed**
 
+
 The unit of analysis is one Kickstarter campaign.
 
 ---
@@ -97,6 +96,7 @@ Fields that directly or indirectly reveal how the campaign performed were remove
 - number of backers
 - spotlight status
 - state-change timing
+
 
 Including these fields would create **target leakage** because they are only known during or after campaign performance unfolds. A model containing them might look extremely accurate while being useless for a genuine launch-time prediction.
 
@@ -151,6 +151,7 @@ These included checking that:
 - Preparation time was not negative.
 - Each campaign had a valid success or failure outcome.
 - Category and country information were available.
+
 
 These checks helped prevent invalid or incomplete records from entering the model. I also kept them within the Alteryx workflow so the same rules could be applied if the dataset was updated in future.
 
@@ -448,7 +449,7 @@ This supports the finding that information available at launch contains predicti
 
 One of the advantages of logistic regression is that it allows us to understand how different campaign characteristics are associated with success, rather than simply producing a prediction.
 
-I converted the model coefficients into odds ratios using exp(coefficient). An **odds ratio** above 1 indicates higher odds of success, while a value below 1 indicates lower odds, holding the other variables in the model constant.
+I converted the model coefficients into odds ratios using `exp(coefficient)`. An **odds ratio** above 1 indicates higher odds of success, while a value below 1 indicates lower odds, holding the other variables in the model constant.
 
 The table below highlights seven selected predictors from the Expanded model, using the training data.
 
@@ -469,13 +470,13 @@ The orange reference line represents an odds ratio of 1.0, indicating no differe
 
 The categorical comparisons use the following reference groups:
 
--**Preparation time**: 31–106 days
+- **Preparation time**: 31–106 days
 
--**Campaign duration**: 30 days
+- **Campaign duration**: 30 days
 
--**Blurb length**: 16–20 words
+- **Blurb length**: 16–20 words
 
--**Parent category**: Film & Video
+- **Parent category**: Film & Video
 
 These are selected examples rather than a complete list of model coefficients. They illustrate some of the more interesting relationships identified in the analysis.
 
