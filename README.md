@@ -399,3 +399,7 @@ The final model improves accuracy by about **6.1 percentage points** over a clas
 ### Confusion matrix
 
 ![Confusion matrix](images/Figure10.png)
+
+The test model performed well overall, but the class-level results are important. It correctly identified more than 93% of successful campaigns, while failure recall remained much lower at about 42%.
+
+This matters because a high overall accuracy figure can hide weaker performance on the minority or more difficult class.
