@@ -12,6 +12,7 @@ The analysis focuses on information available at launch, including the funding g
 
 Two models were developed and compared before the final model was tested on campaigns launched from 2025 onwards.
 
+
 **Key results:**
 
 -The final model achieved **79.6% accuracy**, compared with 73.5% from simply predicting that every campaign would succeed.
