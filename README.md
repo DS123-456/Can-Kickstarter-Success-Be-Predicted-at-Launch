@@ -403,3 +403,41 @@ The final model improves accuracy by about **6.1 percentage points** over a clas
 The test model performed well overall, but the class-level results are important. It correctly identified more than 93% of successful campaigns, while failure recall remained much lower at about 42%.
 
 This matters because a high overall accuracy figure can hide weaker performance on the minority or more difficult class.
+
+### Performance on later campaigns
+
+The model also performed well on the later Test data. AUC increased from **0.770** during cross-validation to **0.797** on the 2025+ Test set, suggesting that the model continued to separate higher- and lower-likelihood campaigns effectively.
+
+The Test period also contained a higher proportion of successful campaigns than the Train data. This helps explain why the model became better at identifying successful campaigns but slightly worse at identifying failures.
+
+---
+
+## Interpreting the selected model
+
+The final Expanded model is useful because the main coefficients can be translated into odds ratios.
+
+The categorical results below are relative to reference groups:
+
+- Parent category: **Film & Video**
+- Country: **US**
+- Launch month: **October**
+- Launch weekday: **Tuesday**
+- Duration: **30 days**
+- Preparation: **31-106 days**
+- Blurb length: **16-20 words**
+
+Selected odds ratios from the Expanded logistic regression model:
+
+| Predictor / comparison | Odds ratio | Interpretation |
+|---|---:|---|
+| Tenfold increase in funding goal | **0.383** | About 62% lower odds of success, holding other predictors constant |
+| One additional title word | **1.100** | About 10% higher odds per additional word within the observed range |
+| Duration 15-29 days vs 30 days | **1.786** | About 79% higher odds |
+| Duration 60+ days vs 30 days | **0.528** | About 47% lower odds |
+| Preparation 0-1 day vs 31-106 days | **0.205** | About 80% lower odds |
+| Preparation 14-30 days vs 31-106 days | **0.833** | About 17% lower odds |
+| Blurb 11-15 words vs 16-20 | **1.202** | About 20% higher odds |
+| Blurb 30+ words vs 16-20 | **0.582** | About 42% lower odds |
+
+Odds ratios were calculated from the logistic regression coefficients using exp(coefficient).
+
