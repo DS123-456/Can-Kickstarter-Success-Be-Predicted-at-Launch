@@ -374,3 +374,24 @@ The Core and Expanded models were compared using cross-validation on the Train d
 | Success recall | **0.8821** | 0.8820 | effectively unchanged |
 
 ![Cross validation](images/Figure9.png)
+
+The key result was not simply the improvement in overall accuracy. The Expanded model improved the ability to identify **failed campaigns** while preserving almost exactly the same recall for successful campaigns.
+
+The Expanded model was therefore selected before the 2025+ Test set was evaluated.
+
+---
+
+## Final model evaluation
+
+### Final metrics
+
+| Metric | Test result |
+|---|---:|
+| Accuracy | **79.60%** |
+| AUC | **0.7966** |
+| F1 | **0.8705** |
+| Failure recall | **41.61%** |
+| Success recall | **93.32%** |
+| Majority-class baseline accuracy | **73.5%** |
+
+The final model improves accuracy by about **6.1 percentage points** over a classifier that simply predicts Success for every campaign.
