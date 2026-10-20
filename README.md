@@ -42,7 +42,6 @@ This project builds an end-to-end **Alteryx** workflow that takes raw Kickstarte
 10. [Interpreting the selected model](#interpreting-the-selected-model)
 11. [Limitations](#limitations)
 12. [Future development](#future-development)
-13. [Repository structure and reproduction](#repository-structure-and-reproduction)
 
 ---
 
