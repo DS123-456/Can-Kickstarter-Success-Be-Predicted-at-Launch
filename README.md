@@ -452,7 +452,7 @@ The results were also quite different for successful and failed campaigns.
 
 The model correctly identified **93.3% of successful campaigns**, but only **41.6% of failed campaigns**. This means it was much better at recognising projects that would succeed than identifying those that would fail.
 
-![ROC curve](images/Figure11.png)
+![Precision and Recall](images/Figure11.png)
 
 The charts compare the model's ability to correctly identify successful and failed campaigns.
 
