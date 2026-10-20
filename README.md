@@ -469,54 +469,61 @@ Overall, these results suggest that campaign characteristics available at launch
 
 ## Interpreting the selected model
 
-The final Expanded model is useful because the main coefficients can be translated into odds ratios.
+One of the advantages of logistic regression is that it allows us to understand how different campaign characteristics are associated with success, rather than simply producing a prediction.
 
-The categorical results below are relative to reference groups:
+I converted the model coefficients into **odds ratios** using exp(coefficient). An odds ratio above 1 indicates higher odds of success, while a value below 1 indicates lower odds, holding the other variables in the model constant.
 
-- Parent category: **Film & Video**
-- Country: **US**
-- Launch month: **October**
-- Launch weekday: **Tuesday**
-- Duration: **30 days**
-- Preparation: **31-106 days**
-- Blurb length: **16-20 words**
-
-Selected odds ratios from the Expanded logistic regression model:
+The table below highlights seven selected predictors from the Expanded model, using the training data.
 
 | Predictor / comparison | Odds ratio | Interpretation |
 |---|---:|---|
-| Tenfold increase in funding goal | **0.383** | About 62% lower odds of success, holding other predictors constant |
-| One additional title word | **1.100** | About 10% higher odds per additional word within the observed range |
-| Duration 15-29 days vs 30 days | **1.786** | About 79% higher odds |
-| Duration 60+ days vs 30 days | **0.528** | About 47% lower odds |
-| Preparation 0-1 day vs 31-106 days | **0.205** | About 80% lower odds |
-| Preparation 14-30 days vs 31-106 days | **0.833** | About 17% lower odds |
-| Blurb 11-15 words vs 16-20 | **1.202** | About 20% higher odds |
-| Blurb 30+ words vs 16-20 | **0.582** | About 42% lower odds |
+| Tenfold increase in funding goal | **0.383** | Approximately 62% lower odds of success |
+| Preparation time: 0–1 day | **0.205** | Approximately 80% lower odds |
+| Duration: 15–29 days | **1.786** | Approximately 79% higher odds |
+| Duration: 60+ days | **0.528** | Approximately 47% lower odds |
+| One additional title word | **1.100** | Approximately 10% higher odds per word |
+| Blurb length: 21–25 words | **0.791** | Approximately 21% lower odds |
+| Fashion category | **0.153** | Approximately 85% lower odds |
 
-Odds ratios were calculated from the logistic regression coefficients using `exp(coefficient)`.
+
+![Selected predictor odds ratios](images/Figure13.png)
+
+
+The categorical comparisons use the following reference groups:
+
+-**Preparation time**: 31–106 days
+
+-**Campaign duration**: 30 days
+
+-**Blurb length**: 16–20 words
+
+-**Parent category**: Film & Video
+
+These are selected examples rather than a complete list of model coefficients. They illustrate some of the more interesting relationships identified in the analysis.
 
 Several characteristics stood out as useful indicators of whether a campaign would achieve its funding goal.:
 
-### Funding goal is a strong predictor
+### Funding goals and preparation time
 
-Campaigns with larger funding goals generally had lower odds of success, after accounting for the other variables in the model. A tenfold increase in the funding goal was associated with approximately 62% lower odds of success.
+Larger funding goals were associated with lower odds of success, even after accounting for the other campaign characteristics. Campaigns launched within one day of being created also had substantially lower odds than those with longer preparation periods.
 
-### Preparation time contains useful signal
+This suggests that both the scale of the funding target and the time spent preparing a campaign contain useful predictive information. However, the results do not prove that reducing a funding goal or delaying a launch would directly improve a project's chances of success.
 
-Campaigns launched within one day of being created had substantially lower odds of success than those prepared for 31–106 days. This suggests that preparation time may contain useful information about a campaign's likelihood of success.
+### Campaign duration
 
-However, it does not prove that waiting longer before launching directly improves the chances of success.
+The relationship between duration and success was not straightforward. Campaigns running for 15–29 days had higher odds of success than 30-day campaigns, while those lasting 60 days or more had considerably lower odds.
 
-### Very long durations are associated with weaker outcomes
+This suggests that allowing more time to raise funds is not necessarily associated with a better outcome.
 
-Campaigns lasting 60 days or more had lower odds of success than 30-day campaigns, suggesting that longer funding windows were not necessarily associated with better outcomes.
+### Campaign presentation
 
-### Text length has a measurable but non-causal association
+Title length had a positive relationship with success, with each additional word associated with approximately 10% higher odds within the observed range.
 
-Title length showed a positive relationship with success, while blurb length showed a more complex pattern. Moderate-length descriptions generally performed better than very short or very long ones.
+Blurb length showed a more varied pattern. For example, campaigns with 21–25 words had lower odds of success than those with 16–20 words, suggesting that longer descriptions are not necessarily associated with better outcomes.
 
-These findings show how logistic regression can help explain relationships within the data, rather than simply producing a predicted outcome.
+### Project category
+
+The model also identified differences between project categories. Fashion campaigns had substantially lower odds of success than Film & Video campaigns, after accounting for the other predictors.
 
 ---
 
