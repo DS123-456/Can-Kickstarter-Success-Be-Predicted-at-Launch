@@ -399,7 +399,9 @@ I therefore selected the full Expanded model for final testing on later campaign
 
 ## Final model evaluation
 
-### Final metrics
+The selected Expanded model was evaluated on 29,796 campaigns launched from January 2025 onwards. These campaigns had not been used during model development or selection.
+
+### Test-set performance
 
 | Metric | Test result |
 |---|---:|
@@ -410,41 +412,35 @@ I therefore selected the full Expanded model for final testing on later campaign
 | Success recall | **93.32%** |
 | Majority-class baseline accuracy | **73.5%** |
 
-### Confusion matrix
+The model correctly classified approximately eight out of ten campaigns, achieving 79.6% accuracy.
+
+However, as 73.5% of the test campaigns were successful, a model that simply predicted success for every campaign would already achieve 73.5% accuracy.
+
+The logistic regression model therefore improved accuracy by **6.1 percentage points** over this simple baseline.
+
+### Performance by campaign outcome
 
 ![Confusion matrix](images/Figure10.png)
 
-The test model performed well overall, but the class-level results are important. It correctly identified more than 93% of successful campaigns, while failure recall remained much lower at about 42%.
+The confusion matrix shows that the model performed considerably better at identifying successful campaigns than failed campaigns.
 
-This matters because a high overall accuracy figure can hide weaker performance on the minority or more difficult class.
-
-### Performance
-
-The final model was evaluated on 29,796 campaigns launched from January 2025 onwards. These campaigns had not been used during model development or selection.
-
-The model achieved **79.6% accuracy**, meaning it correctly classified approximately eight out of ten campaigns.
-
-However, accuracy needs to be considered alongside the overall success rate. As 73.5% of campaigns in the test dataset were successful, a model predicting success for every campaign would already achieve 73.5% accuracy.
-
-The logistic regression model therefore improved accuracy by approximately **6.1 percentage points** over this simple baseline.
-
-The results were also quite different for successful and failed campaigns.
-
-The model correctly identified **93.3% of successful campaigns**, but only **41.6% of failed campaigns**. This means it was much better at recognising projects that would succeed than identifying those that would fail.
+It correctly identified **93.3% of successful campaigns**, but only **41.6%** of failed campaigns.
 
 ![Precision and Recall](images/Figure11.png)
 
-The charts compare the model's ability to correctly identify successful and failed campaigns.
+Figure 11 provides a more detailed comparison of performance across the two outcomes.
 
-Precision shows how often predictions for each outcome were correct, while recall shows the proportion of actual campaigns in each class that the model successfully identified.
+Precision shows how often predictions for each outcome were correct, while recall shows what proportion of actual campaigns in each class the model identified.
 
-The results highlight the model's stronger performance at identifying successful campaigns, with substantially lower recall for failed campaigns. This is an important limitation when considering its potential use for identifying projects at risk of not achieving their funding goals.
+The main limitation was the relatively low recall for failed campaigns, meaning the model missed a substantial proportion of projects that ultimately failed.
 
-The model also achieved an **AUC of 0.797**, indicating a reasonable ability to distinguish between campaigns with higher and lower likelihoods of success.
+### Ability to distinguish between outcomes
 
 ![ROC curve](images/Figure12.png)
 
-Overall, these results suggest that campaign characteristics available at launch contain useful predictive information. However, the lower failure recall is an important limitation, particularly if the model were used to identify campaigns at risk of missing their funding goal.
+The model achieved an AUC of 0.797, indicating a useful ability to distinguish between campaigns with higher and lower likelihoods of success across different classification thresholds.
+
+This supports the finding that information available at launch contains predictive value, although the model's performance is not equally strong for both outcomes.
 
 ---
 
@@ -452,7 +448,7 @@ Overall, these results suggest that campaign characteristics available at launch
 
 One of the advantages of logistic regression is that it allows us to understand how different campaign characteristics are associated with success, rather than simply producing a prediction.
 
-I converted the model coefficients into **odds ratios** using exp(coefficient). An odds ratio above 1 indicates higher odds of success, while a value below 1 indicates lower odds, holding the other variables in the model constant.
+I converted the model coefficients into odds ratios using exp(coefficient). An **odds ratio** above 1 indicates higher odds of success, while a value below 1 indicates lower odds, holding the other variables in the model constant.
 
 The table below highlights seven selected predictors from the Expanded model, using the training data.
 
@@ -468,7 +464,7 @@ The table below highlights seven selected predictors from the Expanded model, us
 
 
 ![Selected predictor odds ratios](images/Figure13.png)
-
+The orange reference line represents an odds ratio of 1.0, indicating no difference in odds.
 
 The categorical comparisons use the following reference groups:
 
@@ -482,7 +478,6 @@ The categorical comparisons use the following reference groups:
 
 These are selected examples rather than a complete list of model coefficients. They illustrate some of the more interesting relationships identified in the analysis.
 
-Several characteristics stood out as useful indicators of whether a campaign would achieve its funding goal.:
 
 ### Funding goals and preparation time
 
@@ -506,23 +501,7 @@ Blurb length showed a more varied pattern. For example, campaigns with 21–25 w
 
 The model also identified differences between project categories. Fashion campaigns had substantially lower odds of success than Film & Video campaigns, after accounting for the other predictors.
 
----
-
-## What the model can and cannot tell us
-
-### It can
-
-- rank campaigns from lower to higher estimated probability of success
-- identify launch-time characteristics associated with historical success
-- provide interpretable probability estimates
-- support discussion about campaign design and risk
-
-### It cannot
-
-- prove that changing a feature will cause a different outcome
-- capture unobserved creator reputation, audience size or external promotion
-- guarantee that a campaign with a high predicted probability will succeed
-- assume that Kickstarter behaviour will remain stable indefinitely
+These findings reflect statistical associations rather than evidence of causation. They show which characteristics were related to success after accounting for the other predictors, but do not prove that changing them would directly improve a campaign's outcome.
 
 ---
 
@@ -530,19 +509,37 @@ The model also identified differences between project categories. Fashion campai
 
 ### Source-data representativeness
 
-The project uses a public Web Robots scrape, not a controlled random sample. Web Robots also notes historic collection limitations and duplicate possibilities arising from category-based scraping. Results should therefore be interpreted within the observed dataset rather than treated as exact population statistics for all Kickstarter activity.
+The analysis uses a public Web Robots dataset rather than a controlled random sample. The results should therefore be interpreted within the available data rather than treated as exact estimates for all Kickstarter activity.
+
+Only campaigns with a recorded successful or failed outcome were included. As a result, some recently launched campaigns may have been excluded because their funding period had not yet finished or their outcome had not been recorded.
+
+This means the later-period test dataset may not fully represent all campaigns launched during that period.
 
 ### Changes over time
 
-The success rate increased from 64.9% in Train to 73.5% in Test. Although AUC remained strong, class-level behaviour changed. Any deployed model would need ongoing monitoring of success rates, predictor distributions and class-level performance.
+The proportion of successful campaigns was higher in the test period than in the training data, showing that the balance of campaign outcomes changed over time.
 
-### Failure recall
+Although the model demonstrated useful predictive performance on later campaigns, this does not guarantee that its performance will remain consistent in future periods.
 
-The final model identifies successful campaigns much more effectively than failed campaigns. Test failure recall was **41.6%**. The model should therefore not be presented as a reliable filter for rejecting campaigns that will fail.
+Further validation would be needed before using the model routinely.
 
-### Deliberately limited feature set
+### Identifying failed campaigns
 
-The workflow does not use project-text semantics, images, creator history, social activity or post-launch behaviour. Some of these could improve prediction, but they would also increase complexity and, in the case of post-launch measures, risk leakage.
+The model was considerably better at identifying successful campaigns than failed campaigns.
+
+Its weaker failure recall means that it should not be used as a reliable way of rejecting campaigns expected to fail. Some potentially unsuccessful campaigns would still be classified as successful.
+
+### Available predictors
+
+The model uses a deliberately limited set of launch-time characteristics. Other information, such as creator history, the meaning of campaign text, imagery or promotional activity available at launch, could provide additional predictive value.
+
+These were outside the scope of the current analysis. Post-launch performance information was deliberately excluded to prevent target leakage.
+
+### Probability estimates
+
+Although logistic regression produces estimated probabilities, the analysis has not established how well these estimates are calibrated.
+
+Further evaluation would be needed before interpreting individual predicted probabilities as reliable estimates of a campaign's actual likelihood of success.
 
 ---
 
@@ -550,15 +547,22 @@ The workflow does not use project-text semantics, images, creator history, socia
 
 The project could be extended in several directions without changing the core workflow:
 
-1. **Validate on a later independent snapshot** to see whether model performance remains stable.
-2. **Monitor change over time** in country mix, category mix, funding goals and overall success rates.
-3. **Add creator history** if it can be calculated strictly from information available before each campaign launch.
-4. **Test text features** from campaign titles/descriptions, while keeping a simpler logistic model as an interpretable benchmark.
+1. **Validate on later campaigns**: Evaluate the model on another group of campaigns once their outcomes are known, to assess whether predictive performance remains stable over time.
+2. **Monitor changes in campaign characteristics**: Examine shifts in country mix, project categories, funding goals and overall success rates.
+3. **Investigate classification thresholds and probability calibration**: Assess whether alternative classification thresholds improve failure detection and whether the predicted probabilities reflect observed outcomes. Threshold selection should use separate validation data rather than the final test set.
+4. **Introduce creator history**: Investigate whether information about a creator's previous projects improves predictions, using only information available before each campaign launches.
+5. **Explore campaign text**: Test whether features derived from titles and descriptions improve performance, while retaining logistic regression as an interpretable benchmark.
 
 ---
 
-## Summary
+## Conclusion
 
-This project shows that launch-time Kickstarter information contains meaningful predictive signal without using post-launch performance data. The Expanded logistic-regression model was selected because its advantage over the Core model persisted under repeated cross-validation. On campaigns launched from 2025 onwards it achieved **79.6% accuracy, 0.7966 AUC and 0.8705 F1**, outperforming the 73.5% majority-class baseline.
+The analysis suggests that Kickstarter campaign outcomes can be predicted to a useful extent using information available when a campaign launches, although the model is considerably better at identifying successful campaigns than failed ones.
 
-The strongest value of the project is not the headline accuracy alone. The workflow demonstrates the full process from raw public data through leakage control, EDA-led feature design, model comparison and final evaluation on later campaigns, while keeping the final model interpretable enough to explain what it has learned and where its limitations remain.
+The Expanded logistic regression model performed better than the Core model during cross-validation, demonstrating that preparation time and campaign presentation provided additional predictive information. The selected model also outperformed a simple majority-class baseline when evaluated on later campaigns.
+
+Beyond predicting outcomes, the model identified relationships between success and characteristics such as funding goal, preparation time, campaign duration, title length and project category. These findings help explain differences in historical campaign outcomes, although they do not establish that changing a particular characteristic would directly improve the chances of success.
+
+The model could be useful for exploring these relationships and ranking campaigns by their relative predicted likelihood of success. However, its weaker ability to identify failed campaigns means it should not be relied upon to determine which projects will fail.
+
+Overall, the project demonstrates how logistic regression can be used to develop an interpretable predictive model using information available at launch. Further development should focus on improving failure detection and testing whether the model continues to perform well on new campaigns.
