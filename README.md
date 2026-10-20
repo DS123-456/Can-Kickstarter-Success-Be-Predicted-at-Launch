@@ -185,7 +185,7 @@ A second field was then created:
 
 `Log10_Goal_USD = log10(Goal_USD)`
 
-The logarithm was used because raw funding goals are extremely right-skewed, see figure 1. It also produces a useful interpretation: a one-unit increase in `Log10_Goal_USD` represents a **tenfold increase in funding goal**.
+Funding goals varied considerably, with most campaigns seeking relatively small amounts and a small number targeting millions of dollars. I used a logarithmic transformation to reduce the influence of these extreme values and make the funding goal more suitable for regression modelling. Using log10 also means that a one-unit increase represents a tenfold increase in the funding goal, which makes the resulting coefficient easier to interpret.
 
 
 ### Campaign timing
@@ -219,20 +219,20 @@ Categorical variables and EDA-defined bands were converted into indicator fields
 
 ## Train/test design
 
-The project uses a **chronological Train/Test split**, not a random split.
+The project uses a **chronological Train/Test split**, not a random split. Campaigns launched up to the end of 2024 were used to develop and compare the models, while campaigns launched from January 2025 onwards were reserved for final testing.
 
 | Dataset | Period | Campaigns | Split | Success rate |
 |---|---|---:|---:|---:|
 | Train | Launch through 31 Dec 2024 | 108,393 | 78.4% | 64.9% |
 | Test | Launch from 1 Jan 2025 | 29,796 | 21.6% | 73.5% |
 
-All EDA, transformations, bands, rare-country decisions and model selection were based on **Train only**. The Test set was reserved for the final evaluation after the model specification had been locked.
+I chose this approach because the objective was to predict outcomes for later campaigns, rather than evaluate a model on a random mixture of older and newer projects.
 
-This choice was important because the underlying Kickstarter success rate changed materially over time.
+An important finding was that the success rate increased from 64.9% in the training data to 73.5% in the test data. This difference also meant I needed to assess performance using more than accuracy alone.
 
 ![Historical success-rate trend](images/Figure1.png)
 
-The Test period success rate is almost nine percentage points higher than the historical training period. A random split would mix old and recent campaigns together and could make future performance appear more stable than it really is.
+All EDA, transformations, bands, rare-country decisions and model selection were based on **Train only**. The Test set was reserved for the final evaluation after the model specification had been locked.
 
 ---
 
@@ -245,7 +245,7 @@ EDA was used to decide **how variables should enter the model**, not simply to p
 - Are categories well populated?
 - Does the variable provide a plausible launch-time signal?
 
-- ### Target balance
+### Target balance
 
 The training data contain more successful than failed campaigns, so accuracy alone is not a sufficient evaluation metric. A majority-class classifier would already achieve **64.9% accuracy on Train** and **73.5% on Test** simply by predicting Success for every campaign.
 
@@ -286,7 +286,7 @@ Observed success was also non-linear:
 
 A single numeric duration term would incorrectly assume that every extra day has the same directional effect on log-odds.
 
-**Decision:** use duration as categorical bands, with **30 days as the reference group**.
+**Decision:** I grouped campaign duration into bands rather than treating it as a continuous variable, because the relationship with success was not consistent across durations. I used 30 days as the reference group because it was the most common campaign length.
 
 ### Preparation time
 
@@ -395,7 +395,7 @@ The full Expanded model was retained because the stepwise version produced almos
 
 ## Cross-validation and model selection
 
-The Core and Expanded models were compared using cross-validation on the Train data only. Five folds were repeated across three trials using a fixed seed of 42, so performance was assessed on held-back data rather than only on the records used to build the models.
+To compare the models fairly, I used repeated five-fold cross-validation on the training data. This meant that each model was evaluated on data not used to fit it, rather than relying solely on its performance on the full training dataset.
 
 | Metric | Core | Expanded | Improvement |
 |---|---:|---:|---:|
@@ -407,9 +407,13 @@ The Core and Expanded models were compared using cross-validation on the Train d
 
 ![Cross validation](images/Figure9.png)
 
-The key result was not simply the improvement in overall accuracy. The Expanded model improved the ability to identify **failed campaigns** while preserving almost exactly the same recall for successful campaigns.
+The Expanded model performed better across the main evaluation measures.
 
-The Expanded model was therefore selected before the 2025+ Test set was evaluated.
+In particular, **failure recall improved from 40.4% to 48.3%**, while the ability to identify successful campaigns remained almost unchanged at approximately 88.2%.
+
+This was an important improvement because identifying potential failures was already more difficult than identifying successes.
+
+I therefore selected the Expanded model for final testing on later campaigns. A separate stepwise model comparison showed that removing a small number of weaker predictors offered little additional benefit, so I retained the full Expanded model.
 
 ---
 
@@ -426,8 +430,6 @@ The Expanded model was therefore selected before the 2025+ Test set was evaluate
 | Success recall | **93.32%** |
 | Majority-class baseline accuracy | **73.5%** |
 
-The final model improves accuracy by about **6.1 percentage points** over a classifier that simply predicts Success for every campaign.
-
 ### Confusion matrix
 
 ![Confusion matrix](images/Figure10.png)
@@ -436,11 +438,23 @@ The test model performed well overall, but the class-level results are important
 
 This matters because a high overall accuracy figure can hide weaker performance on the minority or more difficult class.
 
-### Performance on later campaigns
+### Performance
 
-The model also performed well on the later Test data. AUC increased from **0.770** during cross-validation to **0.797** on the 2025+ Test set, suggesting that the model continued to separate higher- and lower-likelihood campaigns effectively.
+The final model was evaluated on 29,796 campaigns launched from January 2025 onwards. These campaigns had not been used during model development or selection.
 
-The Test period also contained a higher proportion of successful campaigns than the Train data. This helps explain why the model became better at identifying successful campaigns but slightly worse at identifying failures.
+The model achieved **79.6% accuracy**, meaning it correctly classified approximately eight out of ten campaigns.
+
+However, accuracy needs to be considered alongside the overall success rate. As 73.5% of campaigns in the test dataset were successful, a model predicting success for every campaign would already achieve 73.5% accuracy.
+
+The logistic regression model therefore improved accuracy by approximately **6.1 percentage points** over this simple baseline.
+
+The results were also quite different for successful and failed campaigns.
+
+The model correctly identified **93.3% of successful campaigns**, but only **41.6% of failed campaigns**. This means it was much better at recognising projects that would succeed than identifying those that would fail.
+
+The model also achieved an **AUC of 0.797**, indicating a reasonable ability to distinguish between campaigns with higher and lower likelihoods of success.
+
+Overall, these results suggest that campaign characteristics available at launch contain useful predictive information. However, the lower failure recall is an important limitation, particularly if the model were used to identify campaigns at risk of missing their funding goal.
 
 ---
 
@@ -473,23 +487,27 @@ Selected odds ratios from the Expanded logistic regression model:
 
 Odds ratios were calculated from the logistic regression coefficients using `exp(coefficient)`.
 
-A few broad conclusions stand out:
+Several characteristics stood out as useful indicators of whether a campaign would achieve its funding goal.:
 
 ### Funding goal is a strong predictor
 
-The funding-goal coefficient is one of the strongest and most stable terms in the model. The log10 representation makes the interpretation meaningful: it compares proportional rather than one-dollar changes.
+Campaigns with larger funding goals generally had lower odds of success, after accounting for the other variables in the model. A tenfold increase in the funding goal was associated with approximately 62% lower odds of success.
 
 ### Preparation time contains useful signal
 
-Campaigns launched almost immediately after creation have much lower adjusted odds than the 31-106 day reference group. This may reflect planning quality or other unobserved creator characteristics; it should not be interpreted as proof that simply waiting longer causes success.
+Campaigns launched within one day of being created had substantially lower odds of success than those prepared for 31–106 days. This suggests that preparation time may contain useful information about a campaign's likelihood of success.
+
+However, it does not prove that waiting longer before launching directly improves the chances of success.
 
 ### Very long durations are associated with weaker outcomes
 
-The 60+ day group has substantially lower adjusted odds than the 30-day reference. The EDA also showed a clear decline in observed success for long campaigns.
+Campaigns lasting 60 days or more had lower odds of success than 30-day campaigns, suggesting that longer funding windows were not necessarily associated with better outcomes.
 
 ### Text length has a measurable but non-causal association
 
-Title length was positive as a continuous term, while blurb length followed a curved pattern. Moderate-length blurbs performed better than very short or very long blurbs after adjustment.
+Title length showed a positive relationship with success, while blurb length showed a more complex pattern. Moderate-length descriptions generally performed better than very short or very long ones.
+
+These findings show how logistic regression can help explain relationships within the data, rather than simply producing a predicted outcome.
 
 ---
 
