@@ -2,11 +2,29 @@
 
 ## Logistic regression in Alteryx using only information available before a campaign begins
 
-**Project question:** *To what extent can information available when a Kickstarter campaign launches predict whether it will achieve its funding goal?*
+**Project question:** *Can we predict whether a Kickstarter campaign will achieve its funding goal using only information available when it launches?*
+
+This project explores that question using 138,189 completed Kickstarter campaigns and logistic regression in Alteryx.
+
+I wanted to understand which campaign characteristics are associated with success and whether these could be used to predict the outcome of future projects.
+
+The analysis focuses on information available at launch, including the funding goal, campaign duration, project category, preparation time and the length of the project title and description.
+
+Two models were developed and compared before the final model was tested on campaigns launched from 2025 onwards.
+
+**Key results:**
+
+-The final model achieved **79.6% accuracy**, compared with 73.5% from simply predicting that every campaign would succeed.
+
+-It correctly identified **93.3% of successful campaigns**, but only **41.6% of failed campaigns**.
+
+-Funding goals, preparation time, campaign duration and title length were among the characteristics associated with success.
+
+The results suggest that launch-time information can provide useful predictions, although the model is considerably better at recognising successful campaigns than identifying failures.
+
+The aim was not to create the most complex model, but to develop an interpretable approach that could explain its predictions and be evaluated on later campaigns.
 
 This project builds an end-to-end **Alteryx** workflow that takes raw Kickstarter project files through data preparation, exploratory analysis, feature engineering, logistic-regression modelling, cross-validation and final evaluation on later campaigns.
-
-The aim was not to build the most complex possible model. The priority was to build a model that was **interpretable, reproducible and free from obvious outcome leakage**. Only information that could reasonably be known when a campaign launches was allowed into the predictor set.
 
 ---
 
