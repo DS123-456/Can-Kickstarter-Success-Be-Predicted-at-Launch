@@ -97,7 +97,7 @@ A substantial part of the project was designing a modelling dataset that could r
 
 ### 1. Load and combine the source files
 
-The Alteryx workflow uses a **Directory** tool and **Dynamic Input** to read all CSV components from the selected snapshot folder and append them into one stream. This makes the ingestion repeatable if the snapshot contains multiple component files.
+I used Alteryx to combine the CSV files into one dataset. The process uses Directory and Dynamic Input tools, allowing the same workflow to be used if the source files are updated.
 
 ### 2. Remove clearly post-launch information
 
@@ -133,27 +133,41 @@ This makes the chronology explicit and prevents invalid sequences entering the f
 
 ### 5. Investigate and remove duplicates
 
-Duplicate project IDs were investigated before a unique-project stream was created. The final modelling table contains **138,189 unique campaign IDs**.
+The source data can contain the same Kickstarter project more than once because projects may appear in multiple categories.
 
-### 6. Parse nested fields
+I checked for duplicate project IDs before removing repeated records, ensuring each campaign was represented only once in the modelling dataset.
 
-The workflow investigates nested JSON-style fields for category, creator, location and video information. Category information was retained because it produced stable, interpretable predictors. Creator, location-detail and video fields were investigated but were not added to the final model because they were either too granular, not clearly useful, or not sufficiently defensible as stable launch-time predictors for this project.
+After filtering and removing duplicates, the final dataset contained **138,189 unique campaigns**.
+
+### 6. Investigate nested fields
+
+Some information in the source data was stored within nested JSON fields rather than individual columns. These included details about the project category, creator, location and video content.
+
+I investigated these fields to identify whether they contained useful information for predicting success.
+
+Category information was retained because it provided a clear and interpretable way of comparing different types of projects.
+
+The additional creator, location and video details were not included in the final model because they were either too detailed, showed limited usefulness, or could not be confidently treated as reliable information available at launch.
 
 ### 7. Parent category clean-up
 
-Some records had no parent category because the recorded category itself represented a top-level Kickstarter category. These were investigated and the parent-category field was completed for modelling.
+Some campaigns had no recorded parent category because their existing category was already one of Kickstarter's top-level categories.
+
+I investigated these records and completed the parent-category field where appropriate, ensuring campaigns could be grouped consistently for analysis and modelling.
 
 ### 8. Final QA gate
 
-Before modelling, records were checked for:
+Before modelling, I carried out a final set of checks to ensure the data were suitable for analysis.
 
-- positive USD funding goal
-- positive campaign duration
-- non-negative preparation duration
-- non-null target
-- non-null category and country
+These included checking that:
 
-The purpose of these checks is reproducibility: even if the current data pass a rule, the workflow will also protect a future refresh from silently passing invalid rows downstream.
+- Funding goals were greater than zero.
+- Campaign durations were positive.
+- Preparation time was not negative.
+- Each campaign had a valid success or failure outcome.
+- Category and country information were available.
+
+These checks helped prevent invalid or incomplete records from entering the model. I also kept them within the Alteryx workflow so the same rules could be applied if the dataset was updated in future.
 
 ---
 
