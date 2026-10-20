@@ -4,28 +4,22 @@
 
 **Project question:** *Can we predict whether a Kickstarter campaign will achieve its funding goal using only information available when it launches?*
 
-This project explores that question using 138,189 completed Kickstarter campaigns and logistic regression in Alteryx.
+I used Alteryx to analyse 138,189 completed Kickstarter campaigns and investigate whether characteristics such as funding goal, campaign duration, preparation time, project category and text length could help predict success.
 
-I wanted to understand which campaign characteristics are associated with success and whether these could be used to predict the outcome of future projects.
-
-The analysis focuses on information available at launch, including the funding goal, campaign duration, project category, preparation time and the length of the project title and description.
-
-Two models were developed and compared before the final model was tested on campaigns launched from 2025 onwards.
+Two logistic regression models were developed and compared before the selected model was evaluated on campaigns launched from January 2025 onwards.
 
 
 **Key results:**
 
--The final model achieved **79.6% accuracy**, compared with 73.5% from simply predicting that every campaign would succeed.
+-The final model achieved **79.6% accuracy**, compared with a 73.5% baseline from predicting that every campaign would succeed.
 
 -It correctly identified **93.3% of successful campaigns**, but only **41.6% of failed campaigns**.
 
--Funding goals, preparation time, campaign duration and title length were among the characteristics associated with success.
+-Funding goal, preparation time, campaign duration, title length and project category were among the characteristics associated with success.
 
-The results suggest that launch-time information can provide useful predictions, although the model is considerably better at recognising successful campaigns than identifying failures.
+The project follows the complete analytical process, from preparing the raw data and preventing target leakage through to exploratory analysis, model development and evaluation.
 
-The aim was not to create the most complex model, but to develop an interpretable approach that could explain its predictions and be evaluated on later campaigns.
-
-This project builds an end-to-end **Alteryx** workflow that takes raw Kickstarter project files through data preparation, exploratory analysis, feature engineering, logistic-regression modelling, cross-validation and final evaluation on later campaigns.
+The objective was to develop an interpretable model that could help explain historical relationships, rather than simply maximise predictive accuracy.
 
 ---
 
@@ -43,23 +37,17 @@ This project builds an end-to-end **Alteryx** workflow that takes raw Kickstarte
 10. [Interpreting the selected model](#interpreting-the-selected-model)
 11. [Limitations](#limitations)
 12. [Future development](#future-development)
+13. [Conclusion](#conclusion)
 
 ---
 
 ## Project framing
 
-Kickstarter campaigns are created with a set of decisions already made before launch: the funding goal, campaign duration, project category, preparation period, project title and short description (blurb), country and launch timing. The central question for this project was whether those **launch-time characteristics** contain enough information to estimate the probability that a project will eventually be successfully funded.
+The outcome of each campaign was classified as either successful (1) or failed (0), making this a binary classification problem.
 
-The problem is naturally suited to **binary classification**:
+I chose logistic regression because it is suitable for predicting binary outcomes and produces results that can be interpreted using coefficients and odds ratios.
 
-- `1` = successful campaign
-- `0` = failed campaign
-
-I chose **logistic regression** for three main reasons:
-
-1. The target is binary and the model produces a probability of success between 0 and 1.
-2. Logistic regression is relatively transparent: coefficients and odds ratios can be translated into understandable statements about historical associations.
-3. The objective was to understand the main predictive relationships, not simply to maximise predictive accuracy with an algorithm which is harder to understand and communicate.
+This was important because I wanted to understand which campaign characteristics were associated with success, rather than simply produce predictions without being able to explain them.
 
 ---
 
@@ -71,7 +59,6 @@ https://webrobots.io/kickstarter-datasets/
 
 Web Robots publishes monthly Kickstarter scrapes in CSV and JSON formats. I used the **10 September 2026 CSV snapshot** rather than combining multiple monthly snapshots.
 
-Web Robots notes that its collection process can return duplicate projects because projects may appear in multiple sub-categories. Duplicate handling was therefore treated as a deliberate data-quality step rather than assuming every row was unique.
 
 ### Primary modelling population
 
@@ -115,7 +102,7 @@ Including these fields would create **target leakage** because they are only kno
 
 ### 3. Keep launched, completed campaigns only
 
-The workflow removes projects that were not launched and then retains the two target states used in the primary model: successful and failed.
+The workflow applies the outcome filters described above, ensuring that only launched campaigns with a successful or failed outcome enter the modelling dataset.
 
 ### 4. Convert Unix timestamps and enforce date logic
 
@@ -137,8 +124,6 @@ The source data can contain the same Kickstarter project more than once because 
 
 I checked for duplicate project IDs before removing repeated records, ensuring each campaign was represented only once in the modelling dataset.
 
-After filtering and removing duplicates, the final dataset contained **138,189 unique campaigns**.
-
 ### 6. Investigate nested fields
 
 Some information in the source data was stored within nested JSON fields rather than individual columns. These included details about the project category, creator, location and video content.
@@ -155,7 +140,7 @@ Some campaigns had no recorded parent category because their existing category w
 
 I investigated these records and completed the parent-category field where appropriate, ensuring campaigns could be grouped consistently for analysis and modelling.
 
-### 8. Final QA gate
+### 8. Final data-quality checks
 
 Before modelling, I carried out a final set of checks to ensure the data were suitable for analysis.
 
@@ -185,7 +170,7 @@ A second field was then created:
 
 `Log10_Goal_USD = log10(Goal_USD)`
 
-Funding goals varied considerably, with most campaigns seeking relatively small amounts and a small number targeting millions of dollars. I used a logarithmic transformation to reduce the influence of these extreme values and make the funding goal more suitable for regression modelling. Using log10 also means that a one-unit increase represents a tenfold increase in the funding goal, which makes the resulting coefficient easier to interpret.
+Funding goals varied considerably, so I applied a log10 transformation to reduce the influence of extreme values. This also provides a useful interpretation: a one-unit increase in Log10_Goal_USD represents a tenfold increase in the funding goal. The original and transformed distributions are compared in the EDA.
 
 
 ### Campaign timing
@@ -247,9 +232,7 @@ EDA was used to decide **how variables should enter the model**, not simply to p
 
 ### Target balance
 
-The training data contain more successful than failed campaigns, so accuracy alone is not a sufficient evaluation metric. A majority-class classifier would already achieve **64.9% accuracy on Train** and **73.5% on Test** simply by predicting Success for every campaign.
-
-This motivated the later use of AUC, F1 and class-level recall alongside accuracy.
+Successful campaigns made up the majority of the dataset, meaning that accuracy alone could provide a misleading impression of model performance. I therefore used additional measures, including AUC, F1-score and recall for each outcome, to assess the models more thoroughly.
 
 ### Funding goal: raw vs log scale
 
@@ -261,7 +244,7 @@ The funding-goal distribution is highly skewed:
 - 99th percentile: **$200,000**
 - maximum: more than **$100 million**
 
-The raw distribution is dominated by a small number of extremely large values. The log10 transformation compresses that tail and gives a much more useful modelling scale.
+Figure 2 shows how strongly the raw funding goals are skewed, with a small number of very large campaigns. The log10 transformation produces a more balanced distribution, supporting its use in the regression model.
 
 ![Goal & log histograms](images/Figure2.png)
 
@@ -284,7 +267,6 @@ Observed success was also non-linear:
 | 45-59 days | 8,526 | 57.0% |
 | 60+ days | 11,408 | 42.8% |
 
-A single numeric duration term would incorrectly assume that every extra day has the same directional effect on log-odds.
 
 **Decision:** I grouped campaign duration into bands rather than treating it as a continuous variable, because the relationship with success was not consistent across durations. I used 30 days as the reference group because it was the most common campaign length.
 
@@ -350,7 +332,7 @@ The variation is large enough to justify including parent category as a categori
 
 ### Country, launch month and weekday
 
-Country and launch timing also showed differences in observed success. Sparse countries were grouped into 'Other' using the Train-only rule described earlier. Month and weekday were retained as categorical variables because they provide low-complexity launch-time context.
+Country and launch timing showed differences in observed success rates. Launch month and weekday were retained as categorical predictors because they could provide additional information about the timing of a campaign.
 
 ![Success rate for country, month and weekday](images/Figure8.png)
 
@@ -387,9 +369,7 @@ The purpose of the comparison was simple: **do these additional variables add en
 
 ### Stepwise robustness check
 
-Stepwise AIC versions of both models were also created as a robustness check. The Expanded stepwise version removed only a small number of weaker country/month indicators and produced almost identical predictive performance and coefficient estimates.
-
-The full Expanded model was retained because the stepwise version produced almost identical results, so simplifying the model further offered little practical benefit.
+I also tested stepwise AIC versions of both models to see whether a simpler model could achieve similar results. The Expanded stepwise model removed a small number of weaker country and month indicators, but its predictive performance and coefficient estimates were almost unchanged. I therefore retained the full Expanded model.
 
 ---
 
@@ -407,13 +387,13 @@ To compare the models fairly, I used repeated five-fold cross-validation on the 
 
 ![Cross validation](images/Figure9.png)
 
-The Expanded model performed better across the main evaluation measures.
+The Expanded model performed better in cross-validation, improving accuracy, AUC and F1-score compared with the Core model.
 
-In particular, **failure recall improved from 40.4% to 48.3%**, while the ability to identify successful campaigns remained almost unchanged at approximately 88.2%.
+The most important improvement was in failure recall, which increased by approximately 7.9 percentage points, while success recall remained almost unchanged.
 
-This was an important improvement because identifying potential failures was already more difficult than identifying successes.
+This suggested that adding preparation time and campaign text-length information helped the model identify more failed campaigns without substantially reducing its ability to identify successful ones.
 
-I therefore selected the Expanded model for final testing on later campaigns. A separate stepwise model comparison showed that removing a small number of weaker predictors offered little additional benefit, so I retained the full Expanded model.
+I therefore selected the full Expanded model for final testing on later campaigns.
 
 ---
 
