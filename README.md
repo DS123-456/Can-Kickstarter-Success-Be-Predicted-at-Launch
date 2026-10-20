@@ -372,3 +372,5 @@ The Core and Expanded models were compared using cross-validation on the Train d
 | F1 | 0.8010 | **0.8167** | +0.0157 |
 | Failure recall | 0.4042 | **0.4833** | +0.0791 |
 | Success recall | **0.8821** | 0.8820 | effectively unchanged |
+
+![Cross validation](images/Figure9.png)
