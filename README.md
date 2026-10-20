@@ -11,11 +11,11 @@ Two logistic regression models were developed and compared before the selected m
 
 **Key results:**
 
--The final model achieved **79.6% accuracy**, compared with a 73.5% baseline from predicting that every campaign would succeed.
+- The final model achieved **79.6% accuracy**, compared with a 73.5% baseline from predicting that every campaign would succeed.
 
--It correctly identified **93.3% of successful campaigns**, but only **41.6% of failed campaigns**.
+- It correctly identified **93.3% of successful campaigns**, but only **41.6% of failed campaigns**.
 
--Funding goal, preparation time, campaign duration, title length and project category were among the characteristics associated with success.
+- Funding goal, preparation time, campaign duration, title length and project category were among the characteristics associated with success.
 
 The project follows the complete analytical process, from preparing the raw data and preventing target leakage through to exploratory analysis, model development and evaluation.
 
@@ -464,6 +464,7 @@ The table below highlights seven selected predictors from the Expanded model, us
 
 
 ![Selected predictor odds ratios](images/Figure13.png)
+
 The orange reference line represents an odds ratio of 1.0, indicating no difference in odds.
 
 The categorical comparisons use the following reference groups:
