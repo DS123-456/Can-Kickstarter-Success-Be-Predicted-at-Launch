@@ -452,6 +452,14 @@ The results were also quite different for successful and failed campaigns.
 
 The model correctly identified **93.3% of successful campaigns**, but only **41.6% of failed campaigns**. This means it was much better at recognising projects that would succeed than identifying those that would fail.
 
+![ROC curve](images/Figure11.png)
+
+The charts compare the model's ability to correctly identify successful and failed campaigns.
+
+Precision shows how often predictions for each outcome were correct, while recall shows the proportion of actual campaigns in each class that the model successfully identified.
+
+The results highlight the model's stronger performance at identifying successful campaigns, with substantially lower recall for failed campaigns. This is an important limitation when considering its potential use for identifying projects at risk of not achieving their funding goals.
+
 The model also achieved an **AUC of 0.797**, indicating a reasonable ability to distinguish between campaigns with higher and lower likelihoods of success.
 
 ![ROC curve](images/Figure12.png)
