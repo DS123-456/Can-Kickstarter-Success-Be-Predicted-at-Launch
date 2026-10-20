@@ -441,3 +441,77 @@ Selected odds ratios from the Expanded logistic regression model:
 
 Odds ratios were calculated from the logistic regression coefficients using `exp(coefficient)`.
 
+A few broad conclusions stand out:
+
+### Funding goal is a strong predictor
+
+The funding-goal coefficient is one of the strongest and most stable terms in the model. The log10 representation makes the interpretation meaningful: it compares proportional rather than one-dollar changes.
+
+### Preparation time contains useful signal
+
+Campaigns launched almost immediately after creation have much lower adjusted odds than the 31-106 day reference group. This may reflect planning quality or other unobserved creator characteristics; it should not be interpreted as proof that simply waiting longer causes success.
+
+### Very long durations are associated with weaker outcomes
+
+The 60+ day group has substantially lower adjusted odds than the 30-day reference. The EDA also showed a clear decline in observed success for long campaigns.
+
+### Text length has a measurable but non-causal association
+
+Title length was positive as a continuous term, while blurb length followed a curved pattern. Moderate-length blurbs performed better than very short or very long blurbs after adjustment.
+
+---
+
+## What the model can and cannot tell us
+
+### It can
+
+- rank campaigns from lower to higher estimated probability of success
+- identify launch-time characteristics associated with historical success
+- provide interpretable probability estimates
+- support discussion about campaign design and risk
+
+### It cannot
+
+- prove that changing a feature will cause a different outcome
+- capture unobserved creator reputation, audience size or external promotion
+- guarantee that a campaign with a high predicted probability will succeed
+- assume that Kickstarter behaviour will remain stable indefinitely
+
+---
+
+## Limitations
+
+### Source-data representativeness
+
+The project uses a public Web Robots scrape, not a controlled random sample. Web Robots also notes historic collection limitations and duplicate possibilities arising from category-based scraping. Results should therefore be interpreted within the observed dataset rather than treated as exact population statistics for all Kickstarter activity.
+
+### Changes over time
+
+The success rate increased from 64.9% in Train to 73.5% in Test. Although AUC remained strong, class-level behaviour changed. Any deployed model would need ongoing monitoring of success rates, predictor distributions and class-level performance.
+
+### Failure recall
+
+The final model identifies successful campaigns much more effectively than failed campaigns. Test failure recall was **41.6%**. The model should therefore not be presented as a reliable filter for rejecting campaigns that will fail.
+
+### Deliberately limited feature set
+
+The workflow does not use project-text semantics, images, creator history, social activity or post-launch behaviour. Some of these could improve prediction, but they would also increase complexity and, in the case of post-launch measures, risk leakage.
+
+---
+
+## Future development
+
+The project could be extended in several directions without changing the core workflow:
+
+1. **Validate on a later independent snapshot** to see whether model performance remains stable.
+2. **Monitor change over time** in country mix, category mix, funding goals and overall success rates.
+3. **Add creator history** if it can be calculated strictly from information available before each campaign launch.
+4. **Test text features** from campaign titles/descriptions, while keeping a simpler logistic model as an interpretable benchmark.
+
+---
+
+## Summary
+
+This project shows that launch-time Kickstarter information contains meaningful predictive signal without using post-launch performance data. The Expanded logistic-regression model was selected because its advantage over the Core model persisted under repeated cross-validation. On campaigns launched from 2025 onwards it achieved **79.6% accuracy, 0.7966 AUC and 0.8705 F1**, outperforming the 73.5% majority-class baseline.
+
+The strongest value of the project is not the headline accuracy alone. The workflow demonstrates the full process from raw public data through leakage control, EDA-led feature design, model comparison and final evaluation on later campaigns, while keeping the final model interpretable enough to explain what it has learned and where its limitations remain.
