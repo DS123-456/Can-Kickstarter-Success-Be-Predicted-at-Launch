@@ -284,7 +284,7 @@ Preparation time is heavily right-skewed. In Train:
 - 99th percentile = about **650 days**
 - maximum = more than **3,900 days**
 
-<img src="images/Figure3.png"
+<img src="images/Figure4.png"
      alt="Distribution of campaign preparation time"
      width="550">
 
