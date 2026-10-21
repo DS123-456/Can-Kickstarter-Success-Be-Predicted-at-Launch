@@ -347,7 +347,9 @@ The variation is large enough to justify including parent category as a categori
 
 Country and launch timing showed differences in observed success rates. Launch month and weekday were retained as categorical predictors because they could provide additional information about the timing of a campaign.
 
-![Success rate for country, month and weekday](images/Figure8.png)
+<img src="images/Figure8.png"
+     alt="Campaign success rate by country and launch timing"
+     width="1000">
 
 ### Correlation checks
 
