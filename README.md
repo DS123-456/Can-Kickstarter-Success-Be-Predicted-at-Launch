@@ -214,7 +214,9 @@ I chose this approach because the objective was to predict outcomes for later ca
 
 An important finding was that the success rate increased from 64.9% in the training data to 73.5% in the test data. This difference also meant I needed to assess performance using more than accuracy alone.
 
-![Historical success-rate trend](images/Figure1.png)
+<img src="images/Figure1.png"
+     alt="Kickstarter success rate by launch year"
+     width="550">
 
 All EDA and modelling decisions, including band definitions, country grouping and model selection, were based on Train only. The Test set was reserved for final evaluation after the model specification had been fixed.
 
