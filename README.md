@@ -305,7 +305,9 @@ The relationship with success is clearly non-linear. Success rises through the e
 
 Title length showed a comparatively smooth positive relationship with success. For example, the observed success rate rose from approximately **56% for 1-3 word titles** to around **73% for 10-12 words**.
 
-![Title word count success rate](images/Figure5.png)
+<img src="images/Figure5.png"
+     alt="Campaign success rate by title word count"
+     width="550">
 
 The relationship was smooth enough to keep title length as a single numeric predictor.
 
