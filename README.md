@@ -317,7 +317,9 @@ The relationship was smooth enough to keep title length as a single numeric pred
 
 Blurb length showed an inverted-U pattern rather than a linear relationship.
 
-![Blurb word count success rate](images/Figure6.png)
+<img src="images/Figure6.png"
+     alt="Campaign success rate by blurb word count"
+     width="550">
 
 | Blurb length | Success rate |
 |---|---:|
