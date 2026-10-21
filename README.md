@@ -47,6 +47,14 @@ The outcome of each campaign was classified as either successful (1) or failed (
 
 I chose logistic regression because it is suitable for binary classification and produces interpretable coefficients and odds ratios. This allows me to understand which campaign characteristics are associated with success, rather than simply generating predictions.
 
+### Alteryx workflow
+
+The full analysis was completed in Alteryx, covering data preparation, exploratory analysis, feature engineering, model selection and final evaluation.
+
+![Alteryx workflow](images/Alteryx_workflow.png)
+
+The sections below explain each stage of the workflow and the decisions made during the analysis.
+
 ---
 
 ## Data source and scope
