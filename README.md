@@ -51,7 +51,7 @@ I chose logistic regression because it is suitable for binary classification and
 
 The full analysis was completed in Alteryx, covering data preparation, exploratory analysis, feature engineering, model selection and final evaluation.
 
-![Alteryx workflow](images/Alteryx workflow.png)
+![Alteryx workflow](images/Alteryx_workflow.png)
 
 The sections below explain each stage of the workflow and the decisions made during the analysis.
 
