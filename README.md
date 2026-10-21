@@ -249,7 +249,7 @@ Figure 2 shows how strongly the raw funding goals are skewed, with a small numbe
 
 <img src="images/Figure2.png"
      alt="Funding goal distribution: Before and after log transformation"
-     width="900">
+     width="1000">
 
 **Decision:** use `Log10_Goal_USD` rather than raw `Goal_USD`.
 
