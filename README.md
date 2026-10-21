@@ -437,13 +437,13 @@ The logistic regression model therefore improved accuracy by **6.1 percentage po
 
 ### Performance by campaign outcome
 
-![Confusion matrix](images/Figure10.png)
+![Test-set confusion matrix: Counts and percentages](images/Figure10.png)
 
 The confusion matrix shows that the model performed considerably better at identifying successful campaigns than failed campaigns.
 
 It correctly identified **93.3% of successful campaigns**, but only **41.6%** of failed campaigns.
 
-![Precision and Recall](images/Figure11.png)
+![Test-set precision and recall by campaign outcome](images/Figure11.png)
 
 Figure 11 provides a more detailed comparison of performance across the two outcomes.
 
@@ -453,7 +453,9 @@ The main limitation was the relatively low recall for failed campaigns, meaning 
 
 ### Ability to distinguish between outcomes
 
-![ROC curve](images/Figure12.png)
+<img src="images/Figure12.png"
+     alt="Test-set ROC curve — Expanded model"
+     width="600">
 
 The model achieved an AUC of 0.797, indicating a useful ability to distinguish between campaigns with higher and lower likelihoods of success across different classification thresholds.
 
