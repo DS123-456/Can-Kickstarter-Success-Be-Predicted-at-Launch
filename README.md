@@ -214,7 +214,7 @@ I chose this approach because the objective was to predict outcomes for later ca
 
 An important finding was that the success rate increased from 64.9% in the training data to 73.5% in the test data. This difference also meant I needed to assess performance using more than accuracy alone.
 
-<img src="images/Figure1.png"
+<img src="images/1.png"
      alt="Kickstarter success rate by launch year"
      width="550">
 
@@ -247,7 +247,9 @@ The funding-goal distribution is highly skewed:
 
 Figure 2 shows how strongly the raw funding goals are skewed, with a small number of very large campaigns. The log10 transformation reduces the heavy skew and compresses the extreme values, making the funding goal easier to represent in the regression model.
 
-![Goal & log histograms](images/Figure2.png)
+<img src="images/2.png"
+     alt="Funding goal distribution: Before and after log transformation"
+     width="900">
 
 **Decision:** use `Log10_Goal_USD` rather than raw `Goal_USD`.
 
