@@ -284,7 +284,9 @@ Preparation time is heavily right-skewed. In Train:
 - 99th percentile = about **650 days**
 - maximum = more than **3,900 days**
 
-![Preparation histograms](images/Figure4.png)
+<img src="images/Figure3.png"
+     alt="Distribution of campaign preparation time"
+     width="550">
 
 The relationship with success is clearly non-linear. Success rises through the early preparation bands, peaks in the 31-106 day group, then falls slightly for the longest-preparation campaigns.
 
