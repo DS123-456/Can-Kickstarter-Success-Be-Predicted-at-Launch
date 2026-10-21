@@ -38,6 +38,7 @@ The objective was to develop an interpretable model that could help explain hist
 11. [Limitations](#limitations)
 12. [Future development](#future-development)
 13. [Conclusion](#conclusion)
+14. [Running the Alteryx workflow](#running-the-alteryx-workflow)
 
 ---
 
@@ -580,3 +581,34 @@ Beyond predicting outcomes, the model identified relationships between success a
 The model could be useful for exploring these relationships and ranking campaigns by their relative predicted likelihood of success. However, its weaker ability to identify failed campaigns means it should not be relied upon to determine which projects will fail.
 
 Overall, the project demonstrates how logistic regression can be used to develop an interpretable predictive model using information available at launch. Further development should focus on improving failure detection and testing whether the model continues to perform well on new campaigns.
+
+---
+
+## Running the Alteryx workflow
+
+The Alteryx workflow used for this project is available in:
+
+`workflow/Kickstarter_Success_Analysis.yxmd`
+
+### Requirements
+
+The workflow was developed using **Alteryx Designer 2026.2** and requires **Alteryx Predictive Tools** for the modelling and validation stages.
+
+### Source data
+
+The raw Kickstarter data is not included in this repository.
+
+The analysis uses the **10 September 2026 CSV snapshot** from the Web Robots Kickstarter dataset:
+
+https://webrobots.io/kickstarter-datasets/
+
+After downloading the snapshot, create the following folder structure within the repository:
+
+```text
+Can-Kickstarter-Success-Be-Predicted-at-Launch/
+├── data/
+│   └── kickstarter/
+├── images/
+├── workflow/
+│   └── Kickstarter_Success_Analysis.yxmd
+└── README.md
