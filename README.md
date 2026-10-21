@@ -482,7 +482,9 @@ The table below highlights seven selected predictors from the Expanded model, us
 | Fashion category vs Film & Video | **0.153** | Approximately 85% lower odds |
 
 
-![Selected predictor odds ratios](images/Figure13.png)
+<img src="images/Figure13.png"
+     alt="Selected predictors: Odds ratios for Kickstarter success"
+     width="600">
 
 The orange reference line represents an odds ratio of 1.0, indicating no difference in odds.
 
