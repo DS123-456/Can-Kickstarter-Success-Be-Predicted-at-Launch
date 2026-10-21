@@ -400,7 +400,9 @@ To compare the models fairly, I used repeated five-fold cross-validation on the 
 | Failure recall | 0.4042 | **0.4833** | +0.0791 |
 | Success recall | **0.8821** | 0.8820 | effectively unchanged |
 
-![Cross validation](images/Figure9.png)
+<img src="images/Figure9.png"
+     alt="Cross-validation results: Core vs Expanded model"
+     width="900">
 
 The Expanded model performed better in cross-validation, improving accuracy, AUC and F1-score compared with the Core model.
 
