@@ -484,7 +484,7 @@ The table below highlights seven selected predictors from the Expanded model, us
 
 <img src="images/Figure13.png"
      alt="Selected predictors: Odds ratios for Kickstarter success"
-     width="600">
+     width="500">
 
 The orange reference line represents an odds ratio of 1.0, indicating no difference in odds.
 
