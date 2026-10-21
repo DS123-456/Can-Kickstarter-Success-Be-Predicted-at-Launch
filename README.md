@@ -257,7 +257,9 @@ Figure 2 shows how strongly the raw funding goals are skewed, with a small numbe
 
 Duration is not distributed smoothly. Around **43,600 training campaigns run for exactly 30 days**, with another strong concentration at 60 days.
 
-![Duration histograms](images/Figure3.png)
+<img src="images/Figure3.png"
+     alt="Distribution of campaign duration"
+     width="550">
 
 Observed success was also non-linear:
 
